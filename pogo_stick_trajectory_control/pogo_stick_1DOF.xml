@@ -1,0 +1,56 @@
+<mujoco model="pogo_stick">
+
+     <option integrator = "RK4" timestep = "0.003" 
+            jacobian = "dense" cone = "elliptic" impratio = "1" 
+            solver = "Newton">
+        <!-- <flag energy="enable" fwdinv="enable" /> -->
+    </option>
+
+    <statistic meansize="0.25"/>
+
+
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.6 0.6 0.6" rgb2="0 0 0" width="512" height="512"/>
+        <texture name="texplane" type="2d" builtin="checker" rgb1=".25 .25 .25" rgb2=".3 .3 .3" width="512" height="512" mark="cross" markrgb=".8 .8 .8"/>
+        <material name="matplane" reflectance="0.3" texture="texplane" texrepeat="1 1" texuniform="true"/>
+    </asset>
+
+    <default>
+        <geom density="50" solref="0.02 1" solimp="0 0.95 0.03"/>
+        <site type="sphere" pos="0 0 0" size="0.01" rgba="1 1 1 1"/>
+    </default>
+
+    <worldbody>
+        <geom name="floor" pos="0 0 0" size="0 0 1" type="plane" material="matplane"/>
+        <light directional="true" diffuse=".8 .8 .8" specular=".2 .2 .2" pos="5 0 0" dir="-1 0 0"/>
+        <light directional="true" diffuse=".8 .8 .8" specular=".2 .2 .2" pos="0 0 5" dir="0 0 -1"/>
+        
+        <body name="bob" pos="0 0 1.">
+            <freejoint/>
+            <geom pos="0 0 0" type="sphere" size="0.1" density="1000" rgba="0 1 0 0.8"/>
+            <geom type="capsule" size="0.05" fromto="0 -0.3 0 0 0.3 0" density="1" rgba="1 0 1 0.5"/>
+            <geom type="cylinder" fromto="0 0 0 0 0 -0.5" size="0.05" rgba="0 1 0 0.4"/>
+            <site name="p"/>
+            
+            <body name="leg1" pos="0 0 0">
+                <joint name="knee1_prismatic" type="slide" axis="0 0 -1" />
+                <geom name="foot1_geom" type="box" pos="0 0 -0.95" size="0.08 0.3 0.05"  rgba="0 0 1 0.5"/>
+                <geom type="cylinder" size="0.025" fromto="0 0 -0.35 0 0 -0.95" rgba="0 0 1 0.6"/>
+                <site name="f1" pos="0 0 -0.95"/>
+            </body>
+        </body>
+    </worldbody>
+
+    <sensor>
+        <contact name="base_contact_sensor" body1="world" body2="leg1" num="1" data="found force pos" reduce="netforce"/>
+    </sensor>
+
+    <actuator>
+        <motor name="lin_act" joint="knee1_prismatic"/>
+    </actuator>
+
+    <keyframe>
+        <key name="home" qpos="0 0 1 1 0 0 0 0"/>
+    </keyframe>
+
+</mujoco>
