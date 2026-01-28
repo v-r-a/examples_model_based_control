@@ -5,3 +5,10 @@ This repository contains examples for inverse dynamics (model-based)  control. M
 [Video](https://youtu.be/KBQ-ML4luko) for pogo stick trajectory control.
 
 [Video](https://youtu.be/96bVIeJwN5s) for spot quadruped set point floating base position + orientation control.
+
+## Requirements
+
+- **Python**: 3.10  
+- **MuJoCo**: 3.3.7  (Use any version after 3.3.5 where [contact](https://mujoco.readthedocs.io/en/3.4.0/changelog.html#version-3-3-5-august-8-2025) sensors were introduced)
+- **SciPy**: 1.15.3 (Using least_squares module only.)
+
